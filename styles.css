@@ -55,54 +55,25 @@ button:hover {
     margin-bottom: 15px;
 }
 
-p {
-    margin: 10px 0;
-    font-size: 1.1em;
-}
-
-input[type="number"], select {
-    padding: 8px;
-    margin-top: 10px;
-    border-radius: 4px;
-    border: none;
-    font-size: 16px;
-    background-color: #33334c;
-    color: #ffffff;
-}
-
-input[type="number"] {
-    width: 200px;
-}
-
-#stopSound {
-    background-color: #ff5555;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 5px;
-}
-
-#stopSound:hover {
-    background-color: #bf4040;
-}
-
-#coins-list {
+.coins-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
     max-width: 800px;
     margin: 20px auto;
-    padding: 10px;
-    background-color: #2a2a3d;
-    border-radius: 8px;
 }
 
-.coin {
+.coin-card {
+    background-color: #2a2a3d;
     padding: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #3d3d5c;
-    cursor: pointer;
+    border-radius: 8px;
     text-align: center;
+}
+
+.coin-card img {
+    max-width: 50px;
+    max-height: 50px;
+    margin-bottom: 10px;
 }
 
 .alert-item {
