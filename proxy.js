@@ -36,6 +36,52 @@ const prefetchData = async () => {
 // Home Page Endpoint: Display project information and API documentation links
 app.get('/', (req, res) => {
   res.send(`
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #e0e0e0;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        color: #00bcd4;
+        text-align: center;
+      }
+      p {
+        text-align: center;
+        font-size: 1.1em;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        max-width: 800px;
+        margin: 20px auto;
+      }
+      li {
+        background: #1e1e2f;
+        margin: 10px;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      a {
+        color: #00bcd4;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      code {
+        background: #333;
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #e0e0e0;
+      }
+    </style>
     <h1>Welcome to My Crypto Project API</h1>
     <p>This is a project to provide various cryptocurrency data through multiple endpoints. Below are the available API endpoints that you can call:</p>
     <ul>
