@@ -29,8 +29,8 @@ async function fetchCoins() {
         selectDefaultCoin();
         displayCoins();
         updateAlertCount();
-    } catch (error) {
-        console.error("Error fetching coin data:", error);
+    } catch (e) {
+        console.error("Error fetching coin data:", e);
     }
 }
 
@@ -58,40 +58,35 @@ function showAlertsPage() {
 
 // Select default coin
 function selectDefaultCoin() {
-    let defaultSymbol = "BLS5";
-    let defaultCoin = allCoins.find(coin => coin.symbol === defaultSymbol);
-    if (defaultCoin) {
-        addFavoriteCoin(null, defaultCoin.symbol, true);
+    let e = "BLS5";
+    let t = allCoins.find(t => t.symbol === e);
+    if (t) {
+        addFavoriteCoin(null, t.symbol, true);
     } else {
-        console.log(`Default coin with symbol ${defaultSymbol} not found.`);
+        console.log(`Default coin with symbol ${e} not found.`);
     }
 }
 
 // Select main coin to display details
-function selectMainCoin(coin) {
-    selectedCoin = coin;
-
-    let nameElem = document.getElementById("selected-coin-name");
-    let priceElem = document.getElementById("selected-coin-price");
-    let rankElem = document.getElementById("selected-coin-rank");
-    let volumeElem = document.getElementById("selected-coin-volume");
-    let imageElem = document.getElementById("selected-coin-image");
-
-    nameElem.innerText = `${coin.name || "Unknown"} (${coin.symbol || "Unknown"})`;
-    priceElem.innerText = formatPrice(coin.last_price_usd);
-    rankElem.innerText = coin.market_cap_rank ? `#${coin.market_cap_rank}` : "N/A";
-    volumeElem.innerText = coin.volume_24_usd ? `${formatPrice(coin.volume_24_usd)}` : "N/A";
-
-    if (coin.image_id) {
-        imageElem.src = `https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${coin.image_id}/coin64`;
-        imageElem.style.display = "block";
+function selectMainCoin(e) {
+    selectedCoin = e;
+    let t = document.getElementById("selected-coin-name"),
+        o = document.getElementById("selected-coin-price"),
+        n = document.getElementById("selected-coin-rank"),
+        l = document.getElementById("selected-coin-volume"),
+        i = document.getElementById("selected-coin-image");
+    t.innerText = `${e.name || "Unknown"} (${e.symbol || "Unknown"})`;
+    o.innerText = formatPrice(e.last_price_usd);
+    n.innerText = e.market_cap_rank ? `#${e.market_cap_rank}` : "N/A";
+    l.innerText = e.volume_24_usd ? `${formatPrice(e.volume_24_usd)}` : "N/A";
+    if (e.image_id) {
+        i.src = `https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${e.image_id}/coin64`;
+        i.style.display = "block";
     } else {
-        imageElem.style.display = "none";
+        i.style.display = "none";
     }
-
     showDefaultCoinPage();
 }
-
 
 // Pagination functions
 function nextPage() {
@@ -108,26 +103,23 @@ function prevPage() {
     }
 }
 
+// Display coins in the current page
 function displayCoins() {
-    let coinsList = document.getElementById("coins-list");
-    coinsList.innerHTML = "";
-
-    let start = (currentPage - 1) * coinsPerPage;
-    let paginatedCoins = allCoins.slice(start, start + coinsPerPage);
-
-    paginatedCoins.forEach(coin => {
-        let name = coin.name || "Unknown Name";
-        let symbol = coin.symbol || "Unknown Symbol";
-        let price = formatPrice(coin.last_price_usd);
-
-        let coinCard = document.createElement("div");
-        coinCard.classList.add("coin-card");
-        coinCard.onclick = () => selectMainCoin(coin);
-        coinCard.innerHTML = `
+    let e = document.getElementById("coins-list");
+    e.innerHTML = "";
+    let t = (currentPage - 1) * coinsPerPage;
+    allCoins.slice(t, t + coinsPerPage).forEach(t => {
+        let o = t.name || "Unknown Name",
+            n = t.symbol || "Unknown Symbol",
+            l = formatPrice(t.last_price_usd),
+            i = document.createElement("div");
+        i.classList.add("coin-card");
+        i.onclick = () => selectMainCoin(t);
+        i.innerHTML = `
             <div style="margin-bottom: 15px;">
-                <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${coin.image_id}/coin64" alt="${coin.name} Image" style="width: 64px; height: 64px;">
-                <h3>${name} (${symbol})</h3>
-                <p>Price: ${price}</p>
+                <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${t.image_id}/coin64" alt="${t.name} Image" style="width: 64px; height: 64px;">
+                <h3>${o} (${n})</h3>
+                <p>Price: ${l}</p>
             </div>
             <div style="display: flex; justify-content: space-between; gap: 10px;">
                 <button style="
@@ -139,7 +131,7 @@ function displayCoins() {
                     border-radius: 4px;
                     cursor: pointer;
                     font-size: 0.9em;
-                " onclick="addFavoriteCoin(event, '${coin.symbol}')">⭐ Add to Favorites</button>
+                " onclick="addFavoriteCoin(event, '${t.symbol}')">⭐ Add to Favorites</button>
                 <button style="
                     flex: 1;
                     background-color: tomato;
@@ -149,7 +141,7 @@ function displayCoins() {
                     border-radius: 4px;
                     cursor: pointer;
                     font-size: 0.9em;
-                " onclick="viewAlerts(event, '${coin.symbol}')">🔔 View Alerts</button>
+                " onclick="viewAlerts(event, '${t.symbol}')">🔔 View Alerts</button>
                 <button style="
                     flex: 1;
                     background-color: tomato;
@@ -159,304 +151,286 @@ function displayCoins() {
                     border-radius: 4px;
                     cursor: pointer;
                     font-size: 0.9em;
-                " onclick="editAlerts(event, '${coin.symbol}')">✏️ Edit Alerts</button>
+                " onclick="editAlerts(event, '${t.symbol}')">✏️ Edit Alerts</button>
             </div>
         `;
-        coinsList.appendChild(coinCard);
+        e.appendChild(i);
     });
-
     document.getElementById("page-info").innerText = `Page ${currentPage} of ${Math.ceil(allCoins.length / coinsPerPage)}`;
 }
 
-
 // Helper function to format prices
-function formatPrice(price) {
-    const floatPrice = parseFloat(price);
-    if (isNaN(floatPrice)) {
-        return "Price N/A";
-    }
-    if (floatPrice >= 1) {
-        return `$${floatPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    } else {
-        return `$${floatPrice.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}`;
-    }
+function formatPrice(e) {
+    let t = parseFloat(e);
+    return isNaN(t) ? "Price N/A" : t >= 1 ? `$${t.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `$${t.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}`;
 }
 
 // Add favorite coin
-function addFavoriteCoin(event, symbol, isDefault = false) {
-    if (event) event.stopPropagation();
-    let coin = allCoins.find(c => c.symbol === symbol);
-    if (coin && !favoriteCoins.some(c => c.symbol === coin.symbol)) {
-        if (isDefault) {
-            // Place default coin at the beginning
-            favoriteCoins.unshift(coin);
+function addFavoriteCoin(e, t, o = false) {
+    if (e) e.stopPropagation();
+    let n = allCoins.find(e => e.symbol === t);
+    if (n && !favoriteCoins.some(e => e.symbol === n.symbol)) {
+        if (o) {
+            favoriteCoins.unshift(n);
         } else {
-            favoriteCoins.push(coin);
+            favoriteCoins.push(n);
         }
         saveFavoritesToLocalStorage();
         displayFavoriteCoins();
     }
 }
 
-// Updated displayFavoriteCoins function with Remove button
+// Display favorite coins
 function displayFavoriteCoins() {
-    let favoritesList = document.getElementById("favorite-coins-list");
-    favoritesList.innerHTML = "";
-
-    if (favoriteCoins.length === 0) {
-        favoritesList.innerHTML = "<p>No favorite coins added yet.</p>";
+    let e = document.getElementById("favorite-coins-list");
+    if (e.innerHTML = "", favoriteCoins.length === 0) {
+        e.innerHTML = "<p>No favorite coins added yet.</p>";
         return;
     }
-
-    favoriteCoins.forEach(coin => {
-        let name = coin.name || "Unknown Name";
-        let symbol = coin.symbol || "Unknown Symbol";
-        let price = formatPrice(coin.last_price_usd);
-
-        let coinCard = document.createElement("div");
-        coinCard.classList.add("coin-card");
-        coinCard.onclick = () => selectMainCoin(coin);
-        coinCard.innerHTML = `
+    favoriteCoins.forEach(t => {
+        let o = t.name || "Unknown Name",
+            n = t.symbol || "Unknown Symbol",
+            l = formatPrice(t.last_price_usd),
+            i = document.createElement("div");
+        i.classList.add("coin-card");
+        i.onclick = () => selectMainCoin(t);
+        i.innerHTML = `
             <div style="margin-bottom: 15px;">
-                <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${coin.image_id}/coin64" alt="${coin.name} Image" style="width: 64px; height: 64px;">
-                <h3>${name} (${symbol})</h3>
-                <p>Price: ${price}</p>
+                <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${t.image_id}/coin64" alt="${t.name} Image" style="width: 64px; height: 64px;">
+                <h3>${o} (${n})</h3>
+                <p>Price: ${l}</p>
             </div>
             <div class="buttons-container">
-                <button onclick="setAsDefaultCoin(event, '${coin.symbol}')">🔄 Set as Default</button>
-                <button onclick="viewAlerts(event, '${coin.symbol}')">🔔 View Alerts</button>
-                <button onclick="editAlerts(event, '${coin.symbol}')">✏️ Edit Alerts</button>
-                <button onclick="removeFavoriteCoin(event, '${coin.symbol}')">🗑️ Remove</button>
+                <button onclick="setAsDefaultCoin(event, '${t.symbol}')">🔄 Set as Default</button>
+                <button onclick="viewAlerts(event, '${t.symbol}')">🔔 View Alerts</button>
+                <button onclick="editAlerts(event, '${t.symbol}')">✏️ Edit Alerts</button>
+                <button onclick="removeFavoriteCoin(event, '${t.symbol}')">🗑️ Remove</button>
             </div>
         `;
-        favoritesList.appendChild(coinCard);
+        e.appendChild(i);
     });
 }
 
 // Search coins
 function searchCoins() {
-    let query = document.getElementById("search-input").value.toLowerCase();
-    if (cachedSearchResults[query]) {
-        displayFilteredCoins(cachedSearchResults[query]);
+    let e = document.getElementById("search-input").value.toLowerCase();
+    if (cachedSearchResults[e]) {
+        displayFilteredCoins(cachedSearchResults[e]);
     } else {
-        let filtered = allCoins.filter(coin => {
-            let name = coin.name ? coin.name.toLowerCase() : "";
-            let symbol = coin.symbol ? coin.symbol.toLowerCase() : "";
-            return name.includes(query) || symbol.includes(query);
+        let t = allCoins.filter(t => {
+            let o = t.name ? t.name.toLowerCase() : "",
+                n = t.symbol ? t.symbol.toLowerCase() : "";
+            return o.includes(e) || n.includes(e);
         });
-        cachedSearchResults[query] = filtered;
-        displayFilteredCoins(filtered);
+        cachedSearchResults[e] = t;
+        displayFilteredCoins(t);
     }
 }
 
 // Display filtered coins
-function displayFilteredCoins(filteredCoins) {
-    let coinsList = document.getElementById("coins-list");
-    coinsList.innerHTML = "";
-
-    filteredCoins.forEach(coin => {
-        let name = coin.name || "Unknown Name";
-        let symbol = coin.symbol || "Unknown Symbol";
-        let price = coin.last_price_usd ? `$${parseFloat(coin.last_price_usd).toFixed(4)}` : "Price N/A";
-
-        let coinCard = document.createElement("div");
-        coinCard.classList.add("coin-card");
-        coinCard.onclick = () => selectMainCoin(coin);
-        coinCard.innerHTML = `
-            <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${coin.image_id}/coin64" alt="${coin.name} Image">
-            <h3>${name} (${symbol})</h3>
-            <p>Price: ${price}</p>
-            <button onclick="addFavoriteCoin(event, '${coin.symbol}')">⭐ Add to Favorites</button>
-            <button onclick="viewAlerts(event, '${coin.symbol}')">🔔 View Alerts</button>
-            <button onclick="editAlerts(event, '${coin.symbol}')">✏️ Edit Alerts</button>
+function displayFilteredCoins(e) {
+    let t = document.getElementById("coins-list");
+    t.innerHTML = "";
+    e.forEach(e => {
+        let o = e.name || "Unknown Name",
+            n = e.symbol || "Unknown Symbol",
+            l = e.last_price_usd ? `$${parseFloat(e.last_price_usd).toFixed(4)}` : "Price N/A",
+            i = document.createElement("div");
+        i.classList.add("coin-card");
+        i.onclick = () => selectMainCoin(e);
+        i.innerHTML = `
+            <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${e.image_id}/coin64" alt="${e.name} Image">
+            <h3>${o} (${n})</h3>
+            <p>Price: ${l}</p>
+            <button onclick="addFavoriteCoin(event, '${e.symbol}')">⭐ Add to Favorites</button>
+            <button onclick="viewAlerts(event, '${e.symbol}')">🔔 View Alerts</button>
+            <button onclick="editAlerts(event, '${e.symbol}')">✏️ Edit Alerts</button>
         `;
-        coinsList.appendChild(coinCard);
+        t.appendChild(i);
     });
-
-    document.getElementById("page-info").innerText = `Showing ${filteredCoins.length} results`;
+    document.getElementById("page-info").innerText = `Showing ${e.length} results`;
 }
 
 // Function to view alerts for a specific coin
-function viewAlerts(event, symbol) {
-    event.stopPropagation(); // Prevent triggering selectMainCoin
-    const coinAlerts = alerts.filter(alert => alert.symbol === symbol);
-    if (coinAlerts.length === 0) {
-        alert("No alerts set for this coin.");
+function viewAlerts(e, t) {
+    e.stopPropagation();
+    let o = alerts.filter(e => e.symbol === t);
+    if (o.length === 0) {
+        showAlert("No alerts set for this coin.");
         return;
     }
-    let alertMessage = `Alerts for ${symbol}:\n`;
-    coinAlerts.forEach((alert, index) => {
-        alertMessage += `${index + 1}. ${alert.condition} $${alert.price}\n`;
+    let n = `Alerts for ${t}:\n`;
+    o.forEach((e, t) => {
+        n += `${t + 1}. ${e.condition} $${e.price}\n`;
     });
-    alert(alertMessage);
+    showAlert(n);
 }
 
 // Function to edit alerts for a specific coin
-function editAlerts(event, symbol) {
-    event.stopPropagation(); // Prevent triggering selectMainCoin
-    const coinAlerts = alerts.filter(alert => alert.symbol === symbol);
-    if (coinAlerts.length === 0) {
-        alert("No alerts to edit for this coin.");
+async function editAlerts(e, t) {
+    e.stopPropagation();
+    let o = alerts.filter(e => e.symbol === t);
+    if (o.length === 0) {
+        showAlert("No alerts to edit for this coin.");
         return;
     }
 
-    // For simplicity, allow users to delete existing alerts or add new ones
-    const action = prompt("Type 'delete' to remove all alerts or 'add' to add a new alert for this coin:");
-
-    if (action === null) return; // User cancelled
-
-    if (action.toLowerCase() === 'delete') {
-        alerts = alerts.filter(alert => alert.symbol !== symbol);
-        saveAlertsToLocalStorage();
-        displayAlerts();
-        alert(`All alerts for ${symbol} have been deleted.`);
-    } else if (action.toLowerCase() === 'add') {
-        const newPrice = prompt("Enter new alert price:");
-        if (newPrice !== null && newPrice !== "") {
-            const condition = prompt("Enter alert condition (above, below, equals, above_equal, below_equal):");
-            if (['above', 'below', 'equals', 'above_equal', 'below_equal'].includes(condition)) {
-                alerts.push({
-                    symbol: symbol,
-                    price: parseFloat(newPrice),
-                    condition: condition,
-                    soundFile: alertSoundFile
-                });
-                saveAlertsToLocalStorage();
-                updateAlertCount();
-                alert("New alert added successfully.");
-                displayAlerts();
-            } else {
-                alert("Invalid condition entered.");
+    let n = await showPrompt("Type 'delete' to remove all alerts or 'add' to add a new alert for this coin:");
+    if (n !== null) {
+        if (n.toLowerCase() === 'delete') {
+            alerts = alerts.filter(e => e.symbol !== t);
+            saveAlertsToLocalStorage();
+            displayAlerts();
+            showAlert(`All alerts for ${t} have been deleted.`);
+        } else if (n.toLowerCase() === 'add') {
+            let l = await showPrompt("Enter new alert price:");
+            if (l !== null && l !== "") {
+                let i = await showPrompt("Enter alert condition (above, below, equals, above_equal, below_equal):");
+                if (['above', 'below', 'equals', 'above_equal', 'below_equal'].includes(i)) {
+                    alerts.push({
+                        symbol: t,
+                        price: parseFloat(l),
+                        condition: i,
+                        soundFile: alertSoundFile
+                    });
+                    saveAlertsToLocalStorage();
+                    updateAlertCount();
+                    showAlert("New alert added successfully.");
+                    displayAlerts();
+                } else {
+                    showAlert("Invalid condition entered.");
+                }
             }
+        } else {
+            showAlert("Invalid action.");
         }
-    } else {
-        alert("Invalid action.");
     }
+}
+
+// Function to remove a favorite coin
+function removeFavoriteCoin(e, t) {
+    e.stopPropagation();
+    favoriteCoins = favoriteCoins.filter(e => e.symbol !== t);
+    saveFavoritesToLocalStorage();
+    displayFavoriteCoins();
+    showAlert(`❌ ${t} has been removed from your favorites.`);
 }
 
 // Alert functions
-function setMainCoinAlert() {
+async function setMainCoinAlert() {
     if (!selectedCoin) {
-        alert("No coin selected.");
+        showAlert("No coin selected.");
         return;
     }
-    const price = parseFloat(document.getElementById("alert-price").value);
-    const condition = document.getElementById("alert-condition").value;
-    const soundFile = alertSoundFile;
-
-    if (isNaN(price)) {
-        alert("Please enter a valid price.");
+    let e = parseFloat(document.getElementById("alert-price").value),
+        t = document.getElementById("alert-condition").value;
+    if (isNaN(e)) {
+        showAlert("Please enter a valid price.");
         return;
     }
-
-    const newAlert = {
+    let o = {
         symbol: selectedCoin.symbol,
-        price: price,
-        condition: condition,
-        soundFile: soundFile
+        price: e,
+        condition: t,
+        soundFile: alertSoundFile
     };
-
-    addAlert(newAlert);
-    alert("✅ Alert set successfully.");
+    addAlert(o);
+    showAlert("✅ Alert set successfully.");
     displayAlerts();
 }
 
-function addAlert(alert) {
-    alerts.push(alert);
+function addAlert(e) {
+    alerts.push(e);
     saveAlertsToLocalStorage();
     updateAlertCount();
 }
 
 function displayAlerts() {
-    const alertsList = document.getElementById("alerts-list");
-    alertsList.innerHTML = "";
-
+    let e = document.getElementById("alerts-list");
+    e.innerHTML = "";
     if (alerts.length === 0) {
-        alertsList.innerHTML = "<p>No active alerts.</p>";
+        e.innerHTML = "<p>No active alerts.</p>";
         updateAlertCount();
         return;
     }
-
-    alerts.forEach((alert, index) => {
-        const alertItem = document.createElement("div");
-        alertItem.classList.add("alert-item");
-        alertItem.innerHTML = `
-            <p>${alert.symbol}: ${alert.condition} $${alert.price}</p>
-            <button onclick="deleteAlert(${index})">🗑️ Delete</button>
+    alerts.forEach((t, o) => {
+        let n = document.createElement("div");
+        n.classList.add("alert-item");
+        n.innerHTML = `
+            <p>${t.symbol}: ${t.condition} $${t.price}</p>
+            <button onclick="deleteAlert(${o})">🗑️ Delete</button>
         `;
-        alertsList.appendChild(alertItem);
+        e.appendChild(n);
     });
     updateAlertCount();
 }
 
-function deleteAlert(index) {
-    alerts.splice(index, 1);
+function deleteAlert(e) {
+    alerts.splice(e, 1);
     saveAlertsToLocalStorage();
     displayAlerts();
 }
 
 // Set as default coin
-function setAsDefaultCoin(event, symbol) {
-    event.stopPropagation();
-    const coin = allCoins.find(c => c.symbol === symbol);
-    if (!coin) {
-        alert("Coin not found.");
+function setAsDefaultCoin(e, t) {
+    e.stopPropagation();
+    let o = allCoins.find(e => e.symbol === t);
+    if (!o) {
+        showAlert("Coin not found.");
         return;
     }
-    // Remove existing default if any
-    favoriteCoins = favoriteCoins.filter(c => c.symbol !== 'BLS5');
-    // Add the new default coin at the beginning
-    favoriteCoins.unshift(coin);
+    favoriteCoins = favoriteCoins.filter(e => e.symbol !== 'BLS5');
+    favoriteCoins.unshift(o);
     saveFavoritesToLocalStorage();
     displayFavoriteCoins();
-    selectMainCoin(coin);
-    alert(`${coin.name} has been set as the default coin.`);
+    selectMainCoin(o);
+    showAlert(`${o.name} has been set as the default coin.`);
 }
 
 // Sound functions
 function previewAlertSound() {
-    const selectedValue = document.getElementById("alert-sound").value;
-    if (selectedValue.startsWith("customSound_")) {
-        alertSound.src = localStorage.getItem(selectedValue);
+    let e = document.getElementById("alert-sound").value;
+    if (e.startsWith("customSound_")) {
+        alertSound.src = localStorage.getItem(e);
     } else {
-        alertSound.src = `https://www.soundjay.com/button/sounds/${selectedValue}`;
+        alertSound.src = `https://www.soundjay.com/button/sounds/${e}`;
     }
-    alertSound.play();
+    alertSound.loop = true; // Ensure looping
+    alertSound.play().catch(error => {
+        console.error("Error playing sound:", error);
+    });
+    document.getElementById("stopSound").style.display = "block";
 }
 
 function uploadCustomSound() {
-    const fileInput = document.getElementById("custom-sound-upload");
-    const file = fileInput.files[0];
-    if (!file) {
-        alert("Please select a sound file to upload.");
+    let e = document.getElementById("custom-sound-upload"),
+        t = e.files[0];
+    if (!t) {
+        showAlert("Please select a sound file to upload.");
         return;
     }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const base64Sound = e.target.result;
-        const soundName = file.name;
-        localStorage.setItem(`customSound_${soundName}`, base64Sound);
-        alert("📤 Custom sound uploaded successfully.");
+    let o = new FileReader();
+    o.onload = function(e) {
+        let o = e.target.result,
+            n = t.name;
+        localStorage.setItem(`customSound_${n}`, o);
+        showAlert("📤 Custom sound uploaded successfully.");
         populateSoundOptions();
     };
-    reader.readAsDataURL(file);
+    o.readAsDataURL(t);
 }
 
 function populateSoundOptions() {
-    const soundSelect = document.getElementById("alert-sound");
-    // Clear existing options except default
-    soundSelect.innerHTML = `
+    let e = document.getElementById("alert-sound");
+    e.innerHTML = `
         <option value="beep-07.mp3">🔊 Beep</option>
         <option value="beep-10.mp3">🔊 Beep 10</option>
         <option value="alert-tone.mp3">🔊 Alert Tone</option>
     `;
-
-    // Add custom sounds from local storage
-    for (let key in localStorage) {
-        if (key.startsWith("customSound_")) {
-            const soundName = key.replace("customSound_", "");
-            soundSelect.innerHTML += `<option value="${key}">${soundName}</option>`;
+    for (let t in localStorage) {
+        if (t.startsWith("customSound_")) {
+            let o = t.replace("customSound_", "");
+            e.innerHTML += `<option value="${t}">${o}</option>`;
         }
     }
 }
@@ -464,106 +438,94 @@ function populateSoundOptions() {
 function stopAlertSound() {
     alertSound.pause();
     alertSound.currentTime = 0;
+    alertSound.loop = false; // Disable looping
     document.getElementById("stopSound").style.display = "none";
 }
 
 // Alert checking
 function checkAlerts() {
-    alerts.forEach(alert => {
-        const coin = allCoins.find(c => c.symbol === alert.symbol);
-        if (!coin || !coin.last_price_usd) return;
-
-        const price = parseFloat(coin.last_price_usd);
-        let conditionMet = false;
-
-        switch (alert.condition) {
+    alerts.forEach(e => {
+        let t = allCoins.find(t => t.symbol === e.symbol);
+        if (!t || !t.last_price_usd) return;
+        let o = parseFloat(t.last_price_usd),
+            n = false;
+        switch (e.condition) {
             case "above":
-                conditionMet = price > alert.price;
+                n = o > e.price;
                 break;
             case "below":
-                conditionMet = price < alert.price;
+                n = o < e.price;
                 break;
             case "equals":
-                conditionMet = price === alert.price;
+                n = o === e.price;
                 break;
             case "above_equal":
-                conditionMet = price >= alert.price;
+                n = o >= e.price;
                 break;
             case "below_equal":
-                conditionMet = price <= alert.price;
+                n = o <= e.price;
                 break;
             default:
                 break;
         }
-
-        if (conditionMet) {
-            if (alert.soundFile.startsWith("customSound_")) {
-                alertSound.src = localStorage.getItem(alert.soundFile);
-            } else {
-                alertSound.src = `https://www.soundjay.com/button/sounds/${alert.soundFile}`;
+        if (n) {
+            if (!alertSound.paused) {
+                console.log("Alert sound is already playing.");
+                return;
             }
-            alertSound.play().catch(error => {
-                console.error("Error playing sound:", error);
+            if (e.soundFile.startsWith("customSound_")) {
+                alertSound.src = localStorage.getItem(e.soundFile);
+            } else {
+                alertSound.src = `https://www.soundjay.com/button/sounds/${e.soundFile}`;
+            }
+            alertSound.loop = true; // Enable looping
+            alertSound.play().catch(e => {
+                console.error("Error playing sound:", e);
             });
             document.getElementById("stopSound").style.display = "block";
-            // Optionally, remove the alert after triggering
-            // alerts = alerts.filter(a => a !== alert);
-            // saveAlertsToLocalStorage();
         }
     });
 }
 
-// Periodically check alerts
-setInterval(checkAlerts, 60000); // Check every minute
-
-
-// Function to toggle the Favorite Coins section
+// Toggle Favorite Coins Section
 function toggleFavoriteCoins() {
-    const favoritesList = document.getElementById("favorite-coins-list");
-    const toggleButton = document.getElementById("toggle-favorites");
-    favoritesList.classList.toggle("collapsed");
-    toggleButton.classList.toggle("rotated");
-    // Change the arrow direction based on state
-    if (favoritesList.classList.contains("collapsed")) {
-        toggleButton.innerText = "▼"; // Collapsed state
+    let e = document.getElementById("favorite-coins-list"),
+        t = document.getElementById("toggle-favorites");
+    e.classList.toggle("collapsed");
+    t.classList.toggle("rotated");
+    if (e.classList.contains("collapsed")) {
+        t.innerText = "▼";
     } else {
-        toggleButton.innerText = "▲"; // Expanded state
+        t.innerText = "▲";
     }
 }
 
-// Attach event listener to the toggle button
-document.getElementById("toggle-favorites").addEventListener("click", toggleFavoriteCoins);
-
-// Function to remove a favorite coin
-function removeFavoriteCoin(event, symbol) {
-    event.stopPropagation(); // Prevent triggering selectMainCoin
-    favoriteCoins = favoriteCoins.filter(c => c.symbol !== symbol);
+// Remove Favorite Coin
+function removeFavoriteCoin(e, t) {
+    e.stopPropagation();
+    favoriteCoins = favoriteCoins.filter(e => e.symbol !== t);
     saveFavoritesToLocalStorage();
     displayFavoriteCoins();
-    alert(`❌ ${symbol} has been removed from your favorites.`);
+    showAlert(`❌ ${t} has been removed from your favorites.`);
 }
 
 // Local storage functions
 function saveFavoritesToLocalStorage() {
-    localStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
+    localStorage.setItem("favoriteCoins", JSON.stringify(favoriteCoins));
 }
 
 function loadFavoritesFromLocalStorage() {
-    const storedFavorites = localStorage.getItem('favoriteCoins');
-    if (storedFavorites) {
-        favoriteCoins = JSON.parse(storedFavorites);
-    }
+    let e = localStorage.getItem("favoriteCoins");
+    if (e) favoriteCoins = JSON.parse(e);
 }
 
 function saveAlertsToLocalStorage() {
-    localStorage.setItem('alerts', JSON.stringify(alerts));
+    localStorage.setItem("alerts", JSON.stringify(alerts));
 }
 
 function loadAlertsFromLocalStorage() {
-    const storedAlerts = localStorage.getItem('alerts');
-    if (storedAlerts) {
-        alerts = JSON.parse(storedAlerts);
-    }
+    let e = localStorage.getItem("alerts");
+    if (e) alerts = JSON.parse(e);
 }
 
 // Update alert count
@@ -577,4 +539,6 @@ function initialize() {
     fetchCoins();
 }
 
+setInterval(checkAlerts, 60000); // Check every minute
+document.getElementById("toggle-favorites").addEventListener("click", toggleFavoriteCoins);
 initialize();

@@ -14,6 +14,9 @@
         <button onclick="showAlertsPage()">🔔 Alerts (<span id="alert-count">0</span>)</button>
     </div>
 
+    <button onclick="stopAlertSound()" id="stopSound" style="display:none;">🛑 Stop Sound</button>
+
+
     <div id="favorite-coins" class="page-section">
         <h2>
             ⭐ Favorite Coins
@@ -73,7 +76,25 @@
     </div>
 
     <audio id="alertSound" preload="auto"></audio>
-    <button onclick="stopAlertSound()" id="stopSound" style="display:none;">🛑 Stop Sound</button>
+
+    <!-- Alert Modal -->
+<div id="customAlertModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" id="alertCloseButton">&times;</span>
+        <p id="alertMessage"></p>
+    </div>
+</div>
+
+<!-- Prompt Modal -->
+<div id="customPromptModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" id="promptCloseButton">&times;</span>
+        <p id="promptMessage"></p>
+        <input type="text" id="promptInput" />
+        <button id="promptOkButton">OK</button>
+        <button id="promptCancelButton">Cancel</button>
+    </div>
+</div>
 
     <script src="script.js"></script>
 </body>
