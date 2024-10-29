@@ -14,20 +14,6 @@ app.use(cors());
 // Create a cache instance with a TTL (time-to-live) of 10 minutes
 const cache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
 
-// Function to pre-fetch specific important coins data
-const prefetchImportantCoins = async () => {
-  try {
-    const symbols = ['BTC', 'ETH', 'ADA']; // Add other important symbols as needed
-    for (const symbol of symbols) {
-      const response = await axios.get(`https://coincodex.com/api/coincodex/get_coin/${symbol}`);
-      cache.set(`coin_${symbol}`, response.data);
-      console.log(`${symbol} data pre-fetched and cached.`);
-    }
-  } catch (error) {
-    console.error('Error pre-fetching important coins:', error.message);
-  }
-};
-
 // Home Page Endpoint: Display project information and API documentation links
 app.get('/', (req, res) => {
   res.send(`
@@ -86,6 +72,7 @@ app.get('/', (req, res) => {
       <li><strong>Get Coin Historical Data:</strong> <a href="/coin_history/BTC/2021-01-01/2021-12-31/100">/coin_history/:symbol/:start_date/:end_date/:samples</a> - Fetches historical data for a specific coin in a given date range and number of samples.</li>
       <li><strong>Get Market Data for a Coin:</strong> <a href="/coin_markets/BTC">/coin_markets/:symbol</a> - Fetches the market data for a specific coin.</li>
       <li><strong>Get Coin Range Data:</strong> <a href="/coin_ranges/BTC,ETH">/coin_ranges/:symbols</a> - Fetches range data for multiple coins (e.g., <code>/coin_ranges/BTC,ETH</code>).</li>
+      <li><strong>Search Coins:</strong> <a href="/search/bitcoin">/search/:query</a> - Searches for coins by name or symbol.</li>
     </ul>
     <p>Replace the placeholders in the URLs with the appropriate symbols to get real data.</p>
   `);
@@ -144,7 +131,7 @@ app.get('/api/all_coins', async (req, res) => {
 
 // Endpoint: Get specific coin details by symbol (with caching)
 app.get("/coin/:symbol", async (req, res) => {
-  const { symbol } = req.params.toUpperCase();
+  const symbol = req.params.symbol.toUpperCase();
   const cacheKey = `coin_${symbol}`;
   const cachedData = cache.get(cacheKey);
 
@@ -166,7 +153,8 @@ app.get("/coin/:symbol", async (req, res) => {
 
 // Endpoint: Get coin historical data (with caching)
 app.get("/coin_history/:symbol/:start_date/:end_date/:samples", async (req, res) => {
-  const { symbol, start_date, end_date, samples } = req.params.toUpperCase();
+  const symbol = req.params.symbol.toUpperCase();
+  const { start_date, end_date, samples } = req.params;
   const cacheKey = `coin_history_${symbol}_${start_date}_${end_date}_${samples}`;
   const cachedData = cache.get(cacheKey);
 
@@ -188,7 +176,7 @@ app.get("/coin_history/:symbol/:start_date/:end_date/:samples", async (req, res)
 
 // Endpoint: Get market data for a specific coin (with caching)
 app.get("/coin_markets/:symbol", async (req, res) => {
-  const { symbol } = req.params.toUpperCase();
+  const symbol = req.params.symbol.toUpperCase();
   const cacheKey = `coin_markets_${symbol}`;
   const cachedData = cache.get(cacheKey);
 
@@ -210,7 +198,7 @@ app.get("/coin_markets/:symbol", async (req, res) => {
 
 // Endpoint: Get coin range data for multiple coins (with caching)
 app.get("/coin_ranges/:symbols", async (req, res) => {
-  const { symbols } = req.params.toUpperCase();
+  const symbols = req.params.symbols.toUpperCase();
   const cacheKey = `coin_ranges_${symbols}`;
   const cachedData = cache.get(cacheKey);
 
@@ -230,10 +218,40 @@ app.get("/coin_ranges/:symbols", async (req, res) => {
   }
 });
 
-// Start the server after pre-fetching important coins data
-(async () => {
-  await prefetchImportantCoins();
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-})();
+// Endpoint: Search coins by query (with caching)
+app.get("/search/:query", async (req, res) => {
+  const query = req.params.query.toLowerCase();
+  const cacheKey = `search_${query}`;
+  const cachedData = cache.get(cacheKey);
+
+  if (cachedData) {
+    console.log(`Serving /search/${query} from cache`);
+    return res.json(cachedData);
+  }
+
+  try {
+    const response = await axios.get('https://coincodex.com/apps/coincodex/cache/all_coins.json');
+    const allCoins = response.data;
+    const filteredCoins = allCoins.filter(coin => 
+      (coin.name && coin.name.toLowerCase().includes(query)) || 
+      (coin.symbol && coin.symbol.toLowerCase().includes(query))
+    );
+
+    const result = {
+      totalResults: filteredCoins.length,
+      data: filteredCoins,
+    };
+
+    cache.set(cacheKey, result);
+    console.log(`Caching /search/${query}`);
+    res.json(result);
+  } catch (error) {
+    console.error(`Error searching for query ${query}:`, error.message);
+    res.status(500).send(`Error searching for query ${query}`);
+  }
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
