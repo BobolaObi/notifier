@@ -10,29 +10,56 @@
 
     <h1>Crypto Tracker</h1>
 
-    <!-- Search Box -->
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search for a coin..." oninput="searchCoins()">
+    <!-- Navigation Buttons -->
+    <div id="navigation">
+        <button onclick="showDefaultCoinPage()">Default Coin</button>
+        <button onclick="showSearchPage()">Search Coins</button>
+        <button onclick="showAlertsPage()">Alerts</button>
     </div>
 
-    <!-- Main Coin Display and Alert Setup -->
-    <div id="main-coin">
-        <h2>Selected Coin: <span id="selected-coin-name">None</span></h2>
-        <p>Current Price: $<span id="selected-coin-price">0.00</span></p>
-        <input type="number" id="alert-price" placeholder="Set alert price">
-        <button onclick="setMainCoinAlert()">Set Price Alert</button>
+    <!-- Default Coin Display Section -->
+    <div id="default-coin" class="page-section">
+        <div id="main-coin">
+            <h2>Selected Coin: <span id="selected-coin-name">None</span></h2>
+            <p>Current Price: $<span id="selected-coin-price">0.00</span></p>
+            <input type="number" id="alert-price" placeholder="Set alert price">
+            <select id="alert-condition">
+                <option value="above">Above</option>
+                <option value="below">Below</option>
+                <option value="equals">Equals</option>
+                <option value="above_equal">Equal or Above</option>
+                <option value="below_equal">Equal or Below</option>
+            </select>
+            <select id="alert-sound">
+                <option value="beep-07.mp3">Beep</option>
+                <option value="beep-10.mp3">Beep 10</option>
+                <option value="alert-tone.mp3">Alert Tone</option>
+            </select>
+            <button onclick="setMainCoinAlert()">Set Price Alert</button>
+        </div>
     </div>
 
-    <!-- All Coins List with Pagination -->
-    <div id="coins-list"></div>
-    <div id="pagination-controls">
-        <button onclick="prevPage()">Previous</button>
-        <span id="page-info"></span>
-        <button onclick="nextPage()">Next</button>
+    <!-- Search Coins Section -->
+    <div id="search-coin" class="page-section" style="display: none;">
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search for a coin..." oninput="searchCoins()">
+        </div>
+        <div id="coins-list"></div>
+        <div id="pagination-controls">
+            <button onclick="prevPage()">Previous</button>
+            <span id="page-info"></span>
+            <button onclick="nextPage()">Next</button>
+        </div>
     </div>
 
-    <!-- Audio element for alert sound -->
-    <audio id="alertSound" src="https://www.soundjay.com/button/sounds/beep-07.mp3" preload="auto"></audio>
+    <!-- Alerts Section -->
+    <div id="alerts-page" class="page-section" style="display: none;">
+        <h2>My Alerts</h2>
+        <div id="alerts-list"></div>
+    </div>
+
+    <audio id="alertSound" preload="auto"></audio>
+    <button id="stopSound" style="display:none;" onclick="stopAlertSound()">Stop Sound</button>
 
     <!-- Link to external JavaScript file -->
     <script src="script.js"></script>
