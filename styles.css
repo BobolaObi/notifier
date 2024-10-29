@@ -303,3 +303,206 @@ h1 {
 #promptCancelButton:hover {
     background-color: #008bbf;
 }
+
+/* Existing Modal Styles */
+
+/* View Alerts Modal */
+#viewAlertsModal .modal-content,
+#editAlertModal .modal-content {
+    /* Reuse existing modal-content styles or customize */
+    background-color: #2a2a3d;
+    margin: 10% auto; /* Adjusted for better visibility */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Adjust width as needed */
+    border-radius: 8px;
+    color: #fff;
+    position: relative;
+}
+
+/* Edit Alert Form Styles */
+#editAlertForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#editAlertForm label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#editAlertForm input,
+#editAlertForm select {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+#editAlertForm button {
+    background-color: #00c8ff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#editAlertForm button:hover {
+    background-color: #008bbf;
+}
+
+/* View Alerts List Styles */
+#viewAlertsList {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.alert-item p {
+    margin: 0;
+}
+
+.alert-item button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.alert-item button:hover {
+    background-color: #e60000;
+}
+
+
+/* Modal Overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #2a2a3d;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 8px;
+    color: #fff;
+    position: relative;
+}
+
+/* Close Button */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Edit Alert Form Styles */
+#editAlertForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#editAlertForm label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#editAlertForm input,
+#editAlertForm select {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+#editAlertForm button {
+    background-color: #00c8ff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#editAlertForm button:hover {
+    background-color: #008bbf;
+}
+
+/* View Alerts List Styles */
+#viewAlertsList {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.alert-item p {
+    margin: 0;
+}
+
+.alert-item button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.alert-item button:hover {
+    background-color: #e60000;
+}
+
+/* Button in View Alerts Modal */
+#viewAlertsModal button {
+    background-color: #00c8ff;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#viewAlertsModal button:hover {
+    background-color: #008bbf;
+}

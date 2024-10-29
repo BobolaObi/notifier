@@ -14,8 +14,7 @@
         <button onclick="showAlertsPage()">🔔 Alerts (<span id="alert-count">0</span>)</button>
     </div>
 
-    <button onclick="stopAlertSound()" id="stopSound" style="display:none;">🛑 Stop Sound</button>
-
+    <button onclick="stopAllAlertSounds()" id="stopSound" style="display:none;">🛑 Stop Sound</button>
 
     <div id="favorite-coins" class="page-section">
         <h2>
@@ -78,23 +77,63 @@
     <audio id="alertSound" preload="auto"></audio>
 
     <!-- Alert Modal -->
-<div id="customAlertModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" id="alertCloseButton">&times;</span>
-        <p id="alertMessage"></p>
+    <div id="customAlertModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="alertCloseButton">&times;</span>
+            <p id="alertMessage"></p>
+        </div>
     </div>
-</div>
 
-<!-- Prompt Modal -->
-<div id="customPromptModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" id="promptCloseButton">&times;</span>
-        <p id="promptMessage"></p>
-        <input type="text" id="promptInput" />
-        <button id="promptOkButton">OK</button>
-        <button id="promptCancelButton">Cancel</button>
+    <!-- Prompt Modal -->
+    <div id="customPromptModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="promptCloseButton">&times;</span>
+            <p id="promptMessage"></p>
+            <input type="text" id="promptInput" />
+            <button id="promptOkButton">OK</button>
+            <button id="promptCancelButton">Cancel</button>
+        </div>
     </div>
-</div>
+
+    <!-- View Alerts Modal -->
+    <div id="viewAlertsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="viewAlertsCloseButton">&times;</span>
+            <h2>🔔 My Alerts</h2>
+            <div id="viewAlertsList"></div>
+            <button onclick="showEditAlertModal()">➕ Add New Alert</button>
+        </div>
+    </div>
+
+    <!-- Edit Alert Modal -->
+    <div id="editAlertModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="editAlertCloseButton">&times;</span>
+            <h2>✏️ Add/Edit Alert</h2>
+            <form id="editAlertForm">
+                <label for="editAlertPrice">💲 Alert Price:</label>
+                <input type="number" id="editAlertPrice" name="price" required>
+                
+                <label for="editAlertCondition">🔼 Condition:</label>
+                <select id="editAlertCondition" name="condition" required>
+                    <option value="above">Above</option>
+                    <option value="below">Below</option>
+                    <option value="equals">Equals</option>
+                    <option value="above_equal">Equal or Above</option>
+                    <option value="below_equal">Equal or Below</option>
+                </select>
+                
+                <label for="editAlertSound">🔊 Sound:</label>
+                <select id="editAlertSound" name="sound">
+                    <option value="beep-07.mp3">Beep</option>
+                    <option value="beep-10.mp3">Beep 10</option>
+                    <option value="alert-tone.mp3">Alert Tone</option>
+                </select>
+                
+                <button type="submit">✅ Save Alert</button>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
