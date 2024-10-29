@@ -1,5 +1,5 @@
 // API URL
-const API_URL = "http://localhost:3000/api/all_coins";
+const API_URL = "https://notifier-wgcq.onrender.com/api/all_coins";
 
 // Audio Elements
 const alertSound = document.getElementById("alertSound");
