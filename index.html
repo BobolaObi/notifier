@@ -2,71 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Crypto Tracker</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-
     <h1>Crypto Tracker</h1>
-
-    <!-- Navigation Buttons -->
     <div id="navigation">
-        <button onclick="showDefaultCoinPage()">Default Coin</button>
-        <button onclick="showSearchPage()">Search Coins</button>
-        <button onclick="showAlertsPage()">Alerts</button>
+        <button onclick="showDefaultCoinPage()">🏠 Default Coins</button>
+        <button onclick="showSearchPage()">🔍 Search Coins</button>
+        <button onclick="showAlertsPage()">🔔 Alerts (<span id="alert-count">0</span>)</button>
     </div>
 
-    <!-- Default Coin Display Section -->
+    <div id="favorite-coins" class="page-section">
+        <h2>
+            ⭐ Favorite Coins
+            <button id="toggle-favorites" class="toggle-button">▲</button>
+        </h2>
+        <div id="favorite-coins-list" class="coins-gallery"></div>
+    </div>
+    
+
     <div id="default-coin" class="page-section">
         <div id="main-coin">
             <div id="coin-details-container">
-                <img id="selected-coin-image" src="" alt="Coin Image" style="display: none; max-width: 100px; max-height: 100px;">
+                <img alt="Coin Image" id="selected-coin-image" src="" style="display:none; max-width:100px; max-height:100px;">
                 <h2>Selected Coin: <span id="selected-coin-name">None</span></h2>
                 <p>Current Price: $<span id="selected-coin-price">0.00</span></p>
                 <p>Market Cap Rank: <span id="selected-coin-rank">N/A</span></p>
                 <p>24h Volume: $<span id="selected-coin-volume">N/A</span></p>
-                <input type="number" id="alert-price" placeholder="Set alert price">
+
+                <input id="alert-price" placeholder="💲 Set alert price" type="number">
                 <select id="alert-condition">
-                    <option value="above">Above</option>
-                    <option value="below">Below</option>
-                    <option value="equals">Equals</option>
-                    <option value="above_equal">Equal or Above</option>
-                    <option value="below_equal">Equal or Below</option>
+                    <option value="above">🔼 Above</option>
+                    <option value="below">🔽 Below</option>
+                    <option value="equals">⚖️ Equals</option>
+                    <option value="above_equal">🔼 Equal or Above</option>
+                    <option value="below_equal">🔽 Equal or Below</option>
                 </select>
-                <select id="alert-sound">
-                    <option value="beep-07.mp3">Beep</option>
-                    <option value="beep-10.mp3">Beep 10</option>
-                    <option value="alert-tone.mp3">Alert Tone</option>
+                <select id="alert-sound" onchange="previewAlertSound()">
+                    <option value="beep-07.mp3">🔊 Beep</option>
+                    <option value="beep-10.mp3">🔊 Beep 10</option>
+                    <option value="alert-tone.mp3">🔊 Alert Tone</option>
                 </select>
-                <button onclick="setMainCoinAlert()">Set Price Alert</button>
+                <button onclick="setMainCoinAlert()">✅ Set Price Alert</button>
+
+                <div style="margin-top: 20px;">
+                    <input type="file" id="custom-sound-upload" accept="audio/*">
+                    <button onclick="uploadCustomSound()">📤 Upload Custom Sound</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Search Coins Section -->
-    <div id="search-coin" class="page-section" style="display: none;">
+    <div id="search-coin" class="page-section" style="display:none;">
         <div id="search-container">
-            <input type="text" id="search-input" placeholder="Search for a coin..." oninput="searchCoins()">
+            <input id="search-input" placeholder="🔍 Search for a coin..." oninput="searchCoins()">
         </div>
         <div id="coins-list" class="coins-gallery"></div>
         <div id="pagination-controls">
-            <button onclick="prevPage()">Previous</button>
+            <button onclick="prevPage()">⬅️ Previous</button>
             <span id="page-info"></span>
-            <button onclick="nextPage()">Next</button>
+            <button onclick="nextPage()">Next ➡️</button>
         </div>
     </div>
 
-    <!-- Alerts Section -->
-    <div id="alerts-page" class="page-section" style="display: none;">
-        <h2>My Alerts</h2>
+    <div id="alerts-page" class="page-section" style="display:none;">
+        <h2>🔔 My Alerts</h2>
         <div id="alerts-list"></div>
     </div>
 
     <audio id="alertSound" preload="auto"></audio>
-    <button id="stopSound" style="display:none;" onclick="stopAlertSound()">Stop Sound</button>
+    <button onclick="stopAlertSound()" id="stopSound" style="display:none;">🛑 Stop Sound</button>
 
-    <!-- Link to external JavaScript file -->
     <script src="script.js"></script>
 </body>
 </html>

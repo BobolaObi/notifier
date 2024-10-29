@@ -1,88 +1,236 @@
+/* Center text in specific elements */
+#coin-details-container,
+#pagination-controls,
+.coin-card,
+h1 {
+    text-align: center;
+}
+
+/* Body styling */
 body {
-    background-color: #1e1e2f;
-    color: #cfcfcf;
     font-family: Arial, sans-serif;
+    background-color: #1e1e2f;
+    color: #fff;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
 }
 
+/* Header styling */
 h1 {
-    color: #ffffff;
-    text-align: center;
     padding: 20px;
-    background-color: #2a2a3d;
-    border-bottom: 1px solid #3d3d5c;
+    color: #00c8ff;
 }
 
-#navigation {
+/* Navigation and search container */
+#navigation,
+#search-container {
     text-align: center;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
-button {
-    background-color: #00c8ff;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 5px;
-}
-
-button:hover {
-    background-color: #008bbf;
-}
-
-#main-coin {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
+/* Alerts page styling */
+#alerts-page {
     background-color: #2a2a3d;
+    padding: 20px;
     border-radius: 8px;
-    text-align: center;
+    color: #fff;
 }
 
-#coin-details-container {
+/* Alert item styling */
+.alert-item {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-}
-
-#selected-coin-image {
-    border: 2px solid #00c8ff;
-    border-radius: 50%;
-    margin-bottom: 15px;
-}
-
-.coins-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px;
-    max-width: 800px;
-    margin: 20px auto;
-}
-
-.coin-card {
-    background-color: #2a2a3d;
     padding: 10px;
     border-radius: 8px;
-    text-align: center;
+    background-color: #343453;
+    margin-bottom: 10px;
+}
+
+.alert-item p {
+    margin: 0;
+}
+
+.alert-item button {
+    background-color: #ff4d4d;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.alert-item button:hover {
+    background-color: #e60000;
+}
+
+/* Coin card styling */
+.coin-card {
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    background-color: #343453;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex; /* Flex container */
+    flex-direction: column; /* Vertical alignment */
+    justify-content: space-between; /* Space between content and buttons */
+    height: 300px; /* Fixed height for consistency */
+}
+
+.coin-card:hover {
+    transform: scale(1.02);
 }
 
 .coin-card img {
-    max-width: 50px;
-    max-height: 50px;
-    margin-bottom: 10px;
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0 auto 10px auto; /* Center the image */
 }
 
-.alert-item {
+.coin-card h3 {
+    color: #00c8ff;
+    margin: 10px 0 5px 0; /* Adjust margins */
+    text-align: center; /* Center the text */
+}
+
+.coin-card p {
+    color: #d3d3d3;
+    margin: 0 0 15px 0; /* Add margin below price */
+    text-align: center; /* Center the text */
+}
+
+/* Buttons container inside coin-card */
+.coin-card .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Buttons inside coin cards */
+.coin-card button {
+    flex: 1; /* Equal width */
+    background-color: tomato;
+    color: #fff;
+    border: none;
+    padding: 8px 0;
+    font-size: 0.9em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.coin-card button:hover {
+    background-color: #e5533d;
+}
+
+/* Navigation buttons */
+#navigation button,
+#pagination-controls button,
+#stopSound {
+    background-color: #00c8ff;
+    border: none;
+    margin: 5px;
+    font-size: 1em;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#navigation button:hover,
+#pagination-controls button:hover,
+#stopSound:hover,
+.coin-card button:hover {
+    background-color: #008bbf;
+}
+
+/* Page section styling */
+.page-section {
+    background-color: #2a2a3d;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-radius: 8px;
+    color: #fff;
+}
+
+/* Coins gallery styling */
+.coins-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Coin details container */
+#coin-details-container img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+/* Search input styling */
+#search-input {
+    width: 80%;
     padding: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #3d3d5c;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    outline: 0;
+    margin-bottom: 20px;
 }
 
+/* Pagination controls */
+#pagination-controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#pagination-controls button {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Page info styling */
 #page-info {
-    color: #ffffff;
-    font-size: 1.1em;
+    color: #fff;
+    margin: 0 10px;
+}
+
+/* Stop Sound button */
+#stopSound {
+    font-size: 1em;
+    display: block;
+    margin: 20px auto;
+    background-color: tomato;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+/* Toggle Button Styling */
+.toggle-button {
+    background: none;
+    border: none;
+    color: #00c8ff;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: transform 0.3s;
+}
+
+.toggle-button.rotated {
+    transform: rotate(180deg);
+}
+
+/* Collapsible Content */
+.collapsed {
+    display: none;
 }
