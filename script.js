@@ -96,7 +96,7 @@ function selectMainCoin(coin) {
     }
 
 
-    debugger
+
 
     if (coinImageElement) {
         if (coin.image_id) {
