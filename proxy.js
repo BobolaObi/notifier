@@ -82,7 +82,7 @@ app.get('/', (req, res) => {
         color: #e0e0e0;
       }
     </style>
-    <h1>Welcome to My Crypto Project API</h1>
+    <h1>Welcome to My Crypto Project API - Built by Bobola Obi using CoinCodex API</h1>
     <p>This is a project to provide various cryptocurrency data through multiple endpoints. Below are the available API endpoints that you can call:</p>
     <ul>
       <li><strong>Get All Coins Data:</strong> <a href="/api/all_coins">/api/all_coins</a> - Fetches all coins data from CoinCodex.</li>
