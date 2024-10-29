@@ -101,7 +101,6 @@ function selectMainCoin(coin) {
     if (coinImageElement) {
         if (coin.image_id) {
             // Assuming image URL follows this pattern
-            // coinImageElement.src = `https://coincodex.com/images/coins/${coin.image_id}.png`;
             coinImageElement.src = `https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${coin.image_id}/coin64`;
 
             coinImageElement.style.display = "block";
@@ -151,7 +150,7 @@ function displayCoins() {
         coinDiv.onclick = () => selectMainCoin(coin);
         coinDiv.innerHTML = `
             <div class="coin-card">
-                <img class="coin-image" src="https://coincodex.com/images/coins/${coin.image_id}.png" alt="${coin.name} Image">
+                <img class="coin-image" src="https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${coin.image_id}/coin64" alt="${coin.name} Image">
                 <h3>${coinName} (${coinSymbol})</h3>
                 <p>Price: ${price}</p>
             </div>`;
