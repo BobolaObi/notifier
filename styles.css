@@ -1,9 +1,8 @@
-/* Center text in specific elements */
-#coin-details-container,
-#pagination-controls,
-.coin-card,
-h1 {
-    text-align: center;
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 /* Body styling */
@@ -16,6 +15,14 @@ body {
     padding: 0;
 }
 
+/* Center text in specific elements */
+#coin-details-container,
+#pagination-controls,
+.coin-card,
+h1 {
+    text-align: center;
+}
+
 /* Header styling */
 h1 {
     padding: 20px;
@@ -25,8 +32,15 @@ h1 {
 /* Navigation and search container */
 #navigation,
 #search-container {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: 20px;
+}
+
+#navigation button,
+#search-container input {
+    margin: 5px;
 }
 
 /* Alerts page styling */
@@ -40,8 +54,7 @@ h1 {
 /* Alert item styling */
 .alert-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     padding: 10px;
     border-radius: 8px;
     background-color: #343453;
@@ -49,18 +62,19 @@ h1 {
 }
 
 .alert-item p {
-    margin: 0;
+    margin-bottom: 10px;
 }
 
 .alert-item button {
     background-color: #ff4d4d;
     color: #fff;
-    padding: 5px 10px;
+    padding: 8px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.3s;
+    width: 100%;
 }
 
 .alert-item button:hover {
@@ -75,10 +89,9 @@ h1 {
     background-color: #343453;
     cursor: pointer;
     transition: transform 0.2s;
-    display: flex; /* Flex container */
-    flex-direction: column; /* Vertical alignment */
-    justify-content: space-between; /* Space between content and buttons */
-    height: 300px; /* Fixed height for consistency */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .coin-card:hover {
@@ -88,42 +101,42 @@ h1 {
 .coin-card img {
     max-width: 100px;
     max-height: 100px;
-    margin: 0 auto 10px auto; /* Center the image */
+    margin: 0 auto 10px auto;
 }
 
 .coin-card h3 {
     color: #00c8ff;
-    margin: 10px 0 5px 0; /* Adjust margins */
-    text-align: center; /* Center the text */
+    margin: 10px 0 5px 0;
+    text-align: center;
 }
 
 .coin-card p {
     color: #d3d3d3;
-    margin: 0 0 15px 0; /* Add margin below price */
-    text-align: center; /* Center the text */
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 /* Buttons container inside coin-card */
 .coin-card .buttons-container {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 
-/* Buttons inside coin cards */
-.coin-card button {
-    flex: 1; /* Equal width */
+.coin-card .buttons-container button {
+    flex: 1 1 calc(50% - 10px);
     background-color: tomato;
     color: #fff;
     border: none;
-    padding: 8px 0;
+    padding: 8px;
     font-size: 0.9em;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.coin-card button:hover {
+.coin-card .buttons-container button:hover {
     background-color: #e5533d;
 }
 
@@ -144,8 +157,7 @@ h1 {
 
 #navigation button:hover,
 #pagination-controls button:hover,
-#stopSound:hover,
-.coin-card button:hover {
+#stopSound:hover {
     background-color: #008bbf;
 }
 
@@ -162,7 +174,7 @@ h1 {
 /* Coins gallery styling */
 .coins-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
 }
 
@@ -174,7 +186,8 @@ h1 {
 
 /* Search input styling */
 #search-input {
-    width: 80%;
+    width: 100%;
+    max-width: 600px;
     padding: 10px;
     font-size: 1em;
     border-radius: 5px;
@@ -214,7 +227,6 @@ h1 {
     transition: background-color 0.3s;
 }
 
-
 /* Toggle Button Styling */
 .toggle-button {
     background: none;
@@ -235,27 +247,27 @@ h1 {
     display: none;
 }
 
-
 /* Modal Overlay */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.5);
 }
 
 /* Modal Content */
 .modal-content {
     background-color: #2a2a3d;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 90%;
+    max-width: 600px;
     border-radius: 8px;
     color: #fff;
     position: relative;
@@ -264,7 +276,9 @@ h1 {
 /* Close Button */
 .close-button {
     color: #aaa;
-    float: right;
+    position: absolute;
+    right: 20px;
+    top: 10px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -309,121 +323,15 @@ h1 {
 /* View Alerts Modal */
 #viewAlertsModal .modal-content,
 #editAlertModal .modal-content {
-    /* Reuse existing modal-content styles or customize */
     background-color: #2a2a3d;
-    margin: 10% auto; /* Adjusted for better visibility */
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Adjust width as needed */
+    width: 90%;
+    max-width: 600px;
     border-radius: 8px;
     color: #fff;
     position: relative;
-}
-
-/* Edit Alert Form Styles */
-#editAlertForm {
-    display: flex;
-    flex-direction: column;
-}
-
-#editAlertForm label {
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-#editAlertForm input,
-#editAlertForm select {
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-#editAlertForm button {
-    background-color: #00c8ff;
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#editAlertForm button:hover {
-    background-color: #008bbf;
-}
-
-/* View Alerts List Styles */
-#viewAlertsList {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.alert-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #444;
-}
-
-.alert-item p {
-    margin: 0;
-}
-
-.alert-item button {
-    background-color: #ff4d4d;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.alert-item button:hover {
-    background-color: #e60000;
-}
-
-
-/* Modal Overlay */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-    background-color: #2a2a3d;
-    margin: 10% auto; /* 10% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    border-radius: 8px;
-    color: #fff;
-    position: relative;
-}
-
-/* Close Button */
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: #fff;
-    text-decoration: none;
 }
 
 /* Edit Alert Form Styles */
@@ -505,4 +413,26 @@ h1 {
 
 #viewAlertsModal button:hover {
     background-color: #008bbf;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 600px) {
+    .coin-card {
+        height: auto; /* Remove fixed height */
+    }
+    .coin-card .buttons-container button {
+        flex: 1 1 100%; /* Buttons take full width */
+    }
+    #navigation,
+    #pagination-controls {
+        flex-direction: column;
+    }
+    #navigation button,
+    #pagination-controls button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #search-input {
+        width: 100%;
+    }
 }
