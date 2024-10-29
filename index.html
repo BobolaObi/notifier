@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Crypto Tracker</h1>
+
+    <!-- Search Box -->
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search for a coin..." oninput="searchCoins()">
+    </div>
+
+    <!-- Main Coin Display and Alert Setup -->
+    <div id="main-coin">
+        <h2>Selected Coin: <span id="selected-coin-name">None</span></h2>
+        <p>Current Price: $<span id="selected-coin-price">0.00</span></p>
+        <input type="number" id="alert-price" placeholder="Set alert price">
+        <button onclick="setMainCoinAlert()">Set Price Alert</button>
+    </div>
+
+    <!-- All Coins List with Pagination -->
+    <div id="coins-list"></div>
+    <div id="pagination-controls">
+        <button onclick="prevPage()">Previous</button>
+        <span id="page-info"></span>
+        <button onclick="nextPage()">Next</button>
+    </div>
+
+    <!-- Audio element for alert sound -->
+    <audio id="alertSound" src="https://www.soundjay.com/button/sounds/beep-07.mp3" preload="auto"></audio>
+
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
