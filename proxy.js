@@ -132,6 +132,12 @@ app.get("/coin_ranges/:symbols", async (req, res) => {
   }
 });
 
+
+// Serve privacy policy as a static file
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'privacy.html'));
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

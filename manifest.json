@@ -29,6 +29,6 @@
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
-  "homepage_url": "https://yourwebsite.com/privacy-policy",
+  "homepage_url": "https://notifier-wgcq.onrender.com/privacy.html",
   "description": "A comprehensive Crypto Tracker extension that helps you monitor cryptocurrency prices and set alerts."
 }
