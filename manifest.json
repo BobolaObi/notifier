@@ -1,0 +1,17 @@
+ {
+    "manifest_version": 2,
+    "name": "Crypto API Extension",
+    "version": "1.0",
+    "description": "A Chrome extension to provide cryptocurrency data using CoinCodex API",
+    "permissions": [
+      "activeTab",
+      "https://coincodex.com/*"
+    ],
+    "background": {
+      "scripts": ["script.js"],
+      "persistent": false
+    },
+    "browser_action": {
+      "default_popup": "index.html"
+    }
+  }

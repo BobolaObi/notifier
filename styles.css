@@ -13,6 +13,8 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    min-width: 640px;
+    height: auto;
 }
 
 /* Center text in specific elements */

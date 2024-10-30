@@ -38,6 +38,25 @@ const editAlertModal = document.getElementById("editAlertModal");
 const editAlertCloseButton = document.getElementById("editAlertCloseButton");
 const editAlertForm = document.getElementById("editAlertForm");
 
+  // Select elements by their ID
+  const defaultCoinsButton = document.getElementById('default-coins-button');
+  const searchCoinsButton = document.getElementById('search-coins-button');
+  const alertsPageButton = document.getElementById('alerts-page-button');
+
+  // Add event listeners to the buttons
+  if (defaultCoinsButton) {
+      defaultCoinsButton.addEventListener('click', showDefaultCoinPage);
+  }
+
+  if (searchCoinsButton) {
+      searchCoinsButton.addEventListener('click', showSearchPage);
+  }
+
+  if (alertsPageButton) {
+      alertsPageButton.addEventListener('click', showAlertsPage);
+  }
+
+
 // -----------------------
 // Modal Handling Functions
 // -----------------------
@@ -52,6 +71,12 @@ function showAlert(message) {
 alertCloseButton.onclick = function() {
     customAlertModal.style.display = "none";
 }
+
+function clearSearchCache() {
+    localStorage.removeItem('lastSearchQuery');
+    localStorage.removeItem('cachedSearchResults');
+}
+
 
 // Function to Show Prompt Modal
 function showPrompt(message) {
@@ -104,23 +129,28 @@ function showViewAlertsModal() {
     const coinAlerts = alerts.filter(alert => alert.symbol === selectedCoin.symbol);
 
     if (coinAlerts.length === 0) {
-        viewAlertsList.innerHTML = `
-            <p>No active alerts for this coin.</p>
-            <button onclick="showEditAlertModal()">➕ Add Alert</button>
-        `;
+        let addButton = document.createElement("button");
+        addButton.innerHTML = "➕ Add Alert";
+        addButton.addEventListener("click", showEditAlertModal);
+        viewAlertsList.innerHTML = "<p>No active alerts for this coin.</p>";
+        viewAlertsList.appendChild(addButton);
     } else {
         coinAlerts.forEach((alert, index) => {
             let alertItem = document.createElement("div");
             alertItem.classList.add("alert-item");
             alertItem.innerHTML = `
                 <p>${alert.symbol}: ${alert.condition} $${alert.price}</p>
-                <button onclick="deleteAlert(${index})">🗑️ Delete</button>
             `;
+            let deleteButton = document.createElement("button");
+            deleteButton.innerHTML = "🗑️ Delete";
+            deleteButton.addEventListener("click", () => deleteAlert(index));
+            alertItem.appendChild(deleteButton);
             viewAlertsList.appendChild(alertItem);
         });
     }
     viewAlertsModal.style.display = "block";
 }
+
 
 // Function to Close View Alerts Modal
 viewAlertsCloseButton.onclick = function() {
@@ -192,6 +222,24 @@ function playAlertSound(soundFile) {
     stopSoundButton.style.display = "block";
 }
 
+// Reuse the existing stopSoundButton initialization
+if (stopSoundButton) {
+    stopSoundButton.addEventListener('click', stopAllAlertSounds);
+}
+
+// Function to load the previous search state from local storage
+function loadCachedSearch() {
+    const lastQuery = localStorage.getItem('lastSearchQuery');
+    if (lastQuery) {
+        searchInput.value = lastQuery;  // Set the input value to the cached query
+        const cachedResults = JSON.parse(localStorage.getItem('cachedSearchResults') || '{}');
+        if (cachedResults[lastQuery]) {
+            displayFilteredCoins(cachedResults[lastQuery]);
+        }
+    }
+}
+
+
 // Function to Stop All Alert Sounds
 function stopAllAlertSounds() {
     activeAudios.forEach(audio => {
@@ -202,8 +250,8 @@ function stopAllAlertSounds() {
     stopSoundButton.style.display = "none";
 }
 
-// Event Listener for Stop Sound Button
-stopSoundButton.addEventListener("click", stopAllAlertSounds);
+// // Event Listener for Stop Sound Button
+// stopSoundButton.addEventListener("click", stopAllAlertSounds);
 
 // -----------------------
 // Coin Management Functions
@@ -433,9 +481,69 @@ function setAsDefaultCoin(event, symbol) {
 // -----------------------
 
 // Search coins
+
+const searchInput = document.getElementById('search-input');
+const prevPageButton = document.getElementById('prev-page-button');
+const nextPageButton = document.getElementById('next-page-button');
+// Pagination Functions
+function nextPage() {
+    if (currentPage * coinsPerPage < filteredCoins.length) {
+        currentPage++;
+        displayFilteredCoins();
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        displayFilteredCoins();
+    }
+}
+// Attach event listener to search input
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        searchCoins();
+    });
+}
+
+// Attach event listeners to pagination buttons
+if (prevPageButton) {
+    prevPageButton.addEventListener('click', prevPage);
+}
+
+if (nextPageButton) {
+    nextPageButton.addEventListener('click', nextPage);
+}
+
+// Variables for pagination state
+let filteredCoins = [];
+
+
+
+// function searchCoins() {
+//     let query = document.getElementById("search-input").value.toLowerCase();
+//     console.log(`Searching for: ${query}`);
+//     if (cachedSearchResults[query]) {
+//         displayFilteredCoins(cachedSearchResults[query]);
+//     } else {
+//         let filteredCoins = allCoins.filter(coin => {
+//             let name = coin.name ? coin.name.toLowerCase() : "";
+//             let symbol = coin.symbol ? coin.symbol.toLowerCase() : "";
+//             return name.includes(query) || symbol.includes(query);
+//         });
+//         cachedSearchResults[query] = filteredCoins;
+//         displayFilteredCoins(filteredCoins);
+//     }
+// }
+
+
 function searchCoins() {
-    let query = document.getElementById("search-input").value.toLowerCase();
+    let query = searchInput.value.toLowerCase();
+    console.log(`Searching for: ${query}`);
     if (cachedSearchResults[query]) {
+        // Use cached results from in-memory cache
+        localStorage.setItem('lastSearchQuery', query);
+        localStorage.setItem('cachedSearchResults', JSON.stringify(cachedSearchResults));
         displayFilteredCoins(cachedSearchResults[query]);
     } else {
         let filteredCoins = allCoins.filter(coin => {
@@ -443,7 +551,10 @@ function searchCoins() {
             let symbol = coin.symbol ? coin.symbol.toLowerCase() : "";
             return name.includes(query) || symbol.includes(query);
         });
+        // Update both local cache and in-memory cache
         cachedSearchResults[query] = filteredCoins;
+        localStorage.setItem('lastSearchQuery', query);
+        localStorage.setItem('cachedSearchResults', JSON.stringify(cachedSearchResults));
         displayFilteredCoins(filteredCoins);
     }
 }
@@ -589,8 +700,11 @@ function displayAlertsPage() {
         alertItem.classList.add('alert-item');
         alertItem.innerHTML = `
             <p>${alert.symbol}: ${alert.condition} $${alert.price}</p>
-            <button onclick="deleteAlert(${index})">🗑️ Delete</button>
         `;
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "🗑️ Delete";
+        deleteButton.addEventListener("click", () => deleteAlert(index));
+        alertItem.appendChild(deleteButton);
         alertsList.appendChild(alertItem);
     });
 }
@@ -675,6 +789,25 @@ function checkAlerts() {
 // Utility Functions
 // -----------------------
 
+  // Select elements by their IDs
+  const alertSoundSelect = document.getElementById('alert-sound');
+  const setAlertButton = document.getElementById('set-alert-button');
+  const uploadSoundButton = document.getElementById('upload-sound-button');
+
+   // Event listener for sound preview
+   if (alertSoundSelect) {
+    alertSoundSelect.addEventListener('change', previewAlertSound);
+}
+
+// Event listener for setting an alert
+if (setAlertButton) {
+    setAlertButton.addEventListener('click', setMainCoinAlert);
+}
+
+// Event listener for uploading a custom sound
+if (uploadSoundButton) {
+    uploadSoundButton.addEventListener('click', uploadCustomSound);
+}
 // Populate Sound Options (for Edit Alert Modal and Main Alert Section)
 function populateSoundOptions() {
     let soundOptions = `
@@ -726,6 +859,7 @@ function previewAlertSound() {
     playAlertSound(selectedSound);
 }
 
+
 // Function to Toggle the Favorite Coins Section and Persist State
 function toggleFavoriteCoins() {
     let favoriteCoinsList = document.getElementById("favorite-coins-list");
@@ -746,10 +880,18 @@ function toggleFavoriteCoins() {
 // -----------------------
 
 // Initialize the Application
+// function initialize() {
+//     populateSoundOptions();
+//     fetchCoins();
+// }
+// Initialize the Application
 function initialize() {
     populateSoundOptions();
-    fetchCoins();
+    fetchCoins().then(() => {
+        loadCachedSearch();  // Load cached search results after fetching coins
+    });
 }
+
 
 // -----------------------
 // Event Listeners and Timers
@@ -813,3 +955,25 @@ function updateAlertCount() {
         console.warn("Element with ID 'alert-count' not found.");
     }
 }
+
+chrome.runtime.onInstalled.addListener(() => {
+    console.log('Crypto API Extension Installed');
+  });
+  
+  // Content script to handle API calls and data presentation (content.js)
+  async function fetchData(url) {
+    console.log(`Fetching data from URL: ${url}`);
+    try {
+      const response = await fetch(url);
+      console.log(`Response status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Data successfully fetched:', data);
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
+  }
