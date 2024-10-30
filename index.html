@@ -8,11 +8,6 @@
 </head>
 <body>
     <h1>Crypto Tracker</h1>
-    <!-- <div id="navigation">
-        <button onclick="showDefaultCoinPage()">🏠 Default Coins</button>
-        <button onclick="showSearchPage()">🔍 Search Coins</button>
-        <button onclick="showAlertsPage()">🔔 Alerts (<span id="alert-count">0</span>)</button>
-    </div> -->
 
     <div id="navigation">
         <button id="default-coins-button">🏠 Default Coins</button>
@@ -20,7 +15,6 @@
         <button id="alerts-page-button">🔔 Alerts (<span id="alert-count">0</span>)</button>
     </div>
     
-
     <button id="stop-sound-button" style="display:none;">🛑 Stop Sound</button>
 
     <div id="favorite-coins" class="page-section">
@@ -30,7 +24,6 @@
         </h2>
         <div id="favorite-coins-list" class="coins-gallery"></div>
     </div>
-    
 
     <div id="default-coin" class="page-section">
         <div id="main-coin">
@@ -40,7 +33,7 @@
                 <p>Current Price: $<span id="selected-coin-price">0.00</span></p>
                 <p>Market Cap Rank: <span id="selected-coin-rank">N/A</span></p>
                 <p>24h Volume: $<span id="selected-coin-volume">N/A</span></p>
-    
+
                 <input id="alert-price" placeholder="💲 Set alert price" type="number">
                 <select id="alert-condition">
                     <option value="above">🔼 Above</option>
@@ -55,7 +48,7 @@
                     <option value="alert-tone.mp3">🔊 Alert Tone</option>
                 </select>
                 <button id="set-alert-button">✅ Set Price Alert</button>
-    
+
                 <div style="margin-top: 10px;">
                     <input type="file" id="custom-sound-upload" accept="audio/*">
                     <button id="upload-sound-button">📤 Upload Custom Sound</button>
@@ -63,13 +56,8 @@
             </div>
         </div>
     </div>
-    
 
     <div id="search-coin" class="page-section" style="display:none;">
-        <!-- <div id="search-container">
-            <input id="search-input" placeholder="🔍 Search for a coin..." oninput="searchCoins()">
-        </div> -->
-
         <div id="search-container">
             <input id="search-input" placeholder="🔍 Search for a coin...">
         </div>
@@ -80,7 +68,6 @@
             <span id="page-info"></span>
             <button id="next-page-button">Next ➡️</button>
         </div>
-        
     </div>
 
     <div id="alerts-page" class="page-section" style="display:none;">
