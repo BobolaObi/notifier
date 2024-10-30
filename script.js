@@ -210,27 +210,16 @@ stopSoundButton.addEventListener("click", stopAllAlertSounds);
 // -----------------------
 
 // Fetch coins from API
-// Fetch coins from API
-async function fetchCoins(page = 1, limit = 10) {
+async function fetchCoins() {
     try {
         console.log("Fetching coins...");
-        let response = await fetch(`${API_URL}?page=${page}&limit=${limit}`);
-        let result = await response.json();
-
-        // Check if the response has the expected structure
-        if (!result || !Array.isArray(result.data)) {
-            console.error("API did not return an array as expected:", result);
+        let response = await fetch(API_URL);
+        allCoins = await response.json();
+        if (!Array.isArray(allCoins)) {
+            console.error("API did not return an array as expected:", allCoins);
             return;
         }
-
-        // Append fetched coins to the allCoins array
-        allCoins = allCoins.concat(result.data);
         console.log(allCoins);
-
-        // Update pagination details
-        currentPage = result.pagination.currentPage;
-        totalPages = result.pagination.totalPages;
-
         loadFavoritesFromLocalStorage();
         loadAlertsFromLocalStorage();
         selectDefaultCoin();
@@ -241,25 +230,17 @@ async function fetchCoins(page = 1, limit = 10) {
     }
 }
 
-
-// Select default coin
 // Select default coin
 function selectDefaultCoin() {
-    let defaultSymbol = "BLS5"; // Ensure this symbol exists or change it
-    let defaultCoin = allCoins.find(coin => coin.symbol.toUpperCase() === defaultSymbol.toUpperCase());
+    let defaultSymbol = "BLS5";
+    let defaultCoin = allCoins.find(coin => coin.symbol === defaultSymbol);
     if (defaultCoin) {
         addFavoriteCoin(null, defaultCoin.symbol, true);
         selectMainCoin(defaultCoin);
     } else {
         console.log(`Default coin with symbol ${defaultSymbol} not found.`);
-        // Optionally, select the first coin in the list
-        if (allCoins.length > 0) {
-            addFavoriteCoin(null, allCoins[0].symbol, true);
-            selectMainCoin(allCoins[0]);
-        }
     }
 }
-
 
 // Select main coin to display details
 function selectMainCoin(coin) {
@@ -301,11 +282,9 @@ function prevPage() {
 }
 
 // Display coins in the current page
-// Display coins in the current page
 function displayCoins() {
     let coinsList = document.getElementById("coins-list");
     coinsList.innerHTML = "";
-
     let startIndex = (currentPage - 1) * coinsPerPage;
     let currentCoins = allCoins.slice(startIndex, startIndex + coinsPerPage);
 
@@ -358,7 +337,7 @@ function displayCoins() {
         coinsList.appendChild(coinCard);
     });
 
-    document.getElementById("page-info").innerText = `Page ${currentPage} of ${totalPages}`;
+    document.getElementById("page-info").innerText = `Page ${currentPage} of ${Math.ceil(allCoins.length / coinsPerPage)}`;
 }
 
 // Helper function to format prices
