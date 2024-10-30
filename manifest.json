@@ -1,17 +1,34 @@
- {
-    "manifest_version": 2,
-    "name": "Crypto API Extension",
-    "version": "1.0",
-    "description": "A Chrome extension to provide cryptocurrency data using CoinCodex API",
-    "permissions": [
-      "activeTab",
-      "https://coincodex.com/*"
-    ],
-    "background": {
-      "scripts": ["script.js"],
-      "persistent": false
-    },
-    "browser_action": {
-      "default_popup": "index.html"
+{
+  "manifest_version": 3,
+  "name": "Crypto API Extension",
+  "version": "1.0",
+  "description": "A Chrome extension to provide cryptocurrency data using CoinCodex API",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://coincodex.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
-  }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "homepage_url": "https://yourwebsite.com/privacy-policy",
+  "description": "A comprehensive Crypto Tracker extension that helps you monitor cryptocurrency prices and set alerts."
+}

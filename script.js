@@ -510,12 +510,149 @@ function saveAlertsToLocalStorage() {
     localStorage.setItem("alerts", JSON.stringify(alerts));
 }
 
-function loadAlertsFromLocalStorage() {
-    const storedAlerts = localStorage.getItem("alerts");
-    if (storedAlerts) {
-        alerts = JSON.parse(storedAlerts);
-    }
+
+
+// Unified Storage Functions
+
+/**
+ * Save data to storage.
+ * @param {string} key - The key under which the data is stored.
+ * @param {any} value - The data to store.
+ * @returns {Promise<void>}
+ */
+function saveToStorage(key, value) {
+    return new Promise((resolve, reject) => {
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            // Chrome Extension environment
+            chrome.storage.local.set({ [key]: value }, () => {
+                if (chrome.runtime.lastError) {
+                    console.error(`Error saving ${key}:`, chrome.runtime.lastError);
+                    reject(chrome.runtime.lastError);
+                } else {
+                    console.log(`Saved ${key} to chrome.storage.local.`);
+                    resolve();
+                }
+            });
+        } else {
+            // Standard Web environment
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+                console.log(`Saved ${key} to localStorage.`);
+                resolve();
+            } catch (error) {
+                console.error(`Error saving ${key} to localStorage:`, error);
+                reject(error);
+            }
+        }
+    });
 }
+
+/**
+ * Load data from storage.
+ * @param {string} key - The key of the data to load.
+ * @returns {Promise<any>} - The retrieved data.
+ */
+function loadFromStorage(key) {
+    return new Promise((resolve, reject) => {
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            // Chrome Extension environment
+            chrome.storage.local.get([key], (result) => {
+                if (chrome.runtime.lastError) {
+                    console.error(`Error loading ${key}:`, chrome.runtime.lastError);
+                    reject(chrome.runtime.lastError);
+                } else {
+                    console.log(`Loaded ${key} from chrome.storage.local.`);
+                    resolve(result[key]);
+                }
+            });
+        } else {
+            // Standard Web environment
+            try {
+                const data = localStorage.getItem(key);
+                console.log(`Loaded ${key} from localStorage.`);
+                resolve(data ? JSON.parse(data) : null);
+            } catch (error) {
+                console.error(`Error loading ${key} from localStorage:`, error);
+                reject(error);
+            }
+        }
+    });
+}
+
+/**
+ * Save favorites to storage.
+ * @returns {Promise<void>}
+ */
+function saveFavoritesToStorage() {
+    return saveToStorage("favoriteCoins", favoriteCoins)
+        .then(() => console.log("Favorites successfully saved."))
+        .catch(error => {
+            console.error("Error saving favorites:", error);
+            showAlert("Error saving favorites.");
+        });
+}
+
+/**
+ * Load favorites from storage.
+ * @returns {Promise<void>}
+ */
+function loadFavoritesFromStorage() {
+    return loadFromStorage("favoriteCoins")
+        .then(storedFavorites => {
+            if (storedFavorites) {
+                favoriteCoins = storedFavorites;
+            }
+
+            return loadFromStorage("favoritesCollapsed");
+        })
+        .then(favoritesCollapsed => {
+            if (favoritesCollapsed === "true") {
+                document.getElementById("favorite-coins-list").classList.add("collapsed");
+                const toggleButton = document.getElementById("toggle-favorites");
+                toggleButton.classList.add("rotated");
+                toggleButton.innerText = "▼";
+            }
+
+            displayFavoriteCoins();
+            console.log("Favorites successfully loaded.");
+        })
+        .catch(error => {
+            console.error("Error loading favorites:", error);
+            showAlert("Error loading favorites.");
+        });
+}
+
+/**
+ * Save alerts to storage.
+ * @returns {Promise<void>}
+ */
+function saveAlertsToLocalStorage() {
+    return saveToStorage("alerts", alerts)
+        .then(() => console.log("Alerts successfully saved."))
+        .catch(error => {
+            console.error("Error saving alerts:", error);
+            showAlert("Error saving alerts.");
+        });
+}
+
+/**
+ * Load alerts from storage.
+ * @returns {Promise<void>}
+ */
+function loadAlertsFromLocalStorage() {
+    return loadFromStorage("alerts")
+        .then(storedAlerts => {
+            if (storedAlerts) {
+                alerts = storedAlerts;
+            }
+            console.log("Alerts successfully loaded.");
+        })
+        .catch(error => {
+            console.error("Error loading alerts:", error);
+            showAlert("Error loading alerts.");
+        });
+}
+
 
 // Alert Checking Function
 function checkAlerts() {
@@ -559,8 +696,6 @@ const uploadSoundButton = document.getElementById("upload-sound-button");
 
 function populateSoundOptions() {
     let options = `
-        <option value="beep-07.mp3">🔊 Beep</option>
-        <option value="beep-10.mp3">🔊 Beep 10</option>
         <option value="alert-tone.mp3">🔊 Alert Tone</option>
     `;
 
@@ -585,6 +720,13 @@ function uploadCustomSound() {
     const file = fileInput.files[0];
 
     if (file) {
+        // Validate file type (e.g., only allow mp3 and wav)
+        const allowedTypes = ['audio/mpeg', 'audio/wav'];
+        if (!allowedTypes.includes(file.type)) {
+            showAlert("Invalid file type. Please upload an MP3 or WAV file.");
+            return;
+        }
+
         // Limit file size to 1MB
         if (file.size > 1 * 1024 * 1024) {
             showAlert("Please upload a sound file smaller than 1MB.");
@@ -596,11 +738,12 @@ function uploadCustomSound() {
             const dataUrl = event.target.result;
             const key = "customSound_" + file.name;
             try {
-                localStorage.setItem(key, dataUrl);
-                populateSoundOptions();
-                showAlert("Custom sound uploaded successfully!");
+                chrome.storage.local.set({ [key]: dataUrl }, () => {
+                    populateSoundOptions();
+                    showAlert("Custom sound uploaded successfully!");
+                });
             } catch (e) {
-                console.error("Error saving to localStorage:", e);
+                console.error("Error saving to chrome.storage.local:", e);
                 showAlert("Failed to upload sound. Please try a smaller file.");
             }
         };
@@ -609,6 +752,7 @@ function uploadCustomSound() {
         showAlert("Please select a sound file to upload.");
     }
 }
+
 
 function previewAlertSound() {
     const soundFile = alertSoundSelect.value;
